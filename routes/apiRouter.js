@@ -9,6 +9,12 @@ import { router as testRouter } from './tests.js';
 const router = express.Router()
 //Ruta base: "/api/"
 
+router.get('/', (req, res) => {
+    res.status(200).json({
+        msg: "This is Guayerd Netflix Backend App 2022 Working. Documentation is still in progress, you can try with '/api/register' or '/api/login' to start."
+    })
+})
+
 // Manipulación de autenticación y autorización (registro y login)
 router.use('/auth', authRouter) // Versión anterior (CommonJS): app.use('/api/users', require('./routes/users'))
 

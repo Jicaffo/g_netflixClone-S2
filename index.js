@@ -27,9 +27,17 @@ app.use(express.json({ extender: true}))
 app.use(morgan('dev'));
 
 // Rutas
+app.get("/", (req, res) => {
+    res.status(302).redirect("/api")
+})
+
 app.use('/api', apiRouter)
 //app.use('/api/v2', apiRouterV2) // Si hubiera más versiones
 
+//Manejo de 404 Not found
+app.use((req, res) => {
+    res.status(404).json({ msg: "Invalid route" })
+})
 
 app.listen(app.get("port"), () =>{
     console.log(`Server running on port ${app.get("port")}`)
