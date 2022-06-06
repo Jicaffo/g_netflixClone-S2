@@ -2,7 +2,7 @@ import express from 'express';
 import connectDB from './config/db.js';
 import dotenv from 'dotenv';
 import cors from 'cors';
-import morgan from 'morgan';
+//import morgan from 'morgan';
 import { router as apiRouter } from './routes/apiRouter.js';
 
 const app = express()
@@ -24,7 +24,7 @@ app.use(cors());
 app.use(express.json({ extender: true}))
 
 // Agrega un middleware que loguea cada petición (para realizar pruebas en etapa de desarrollo)
-app.use(morgan('dev'));
+//app.use(morgan('dev')); // Al deployarlo en Heroku, este ya hace algo muy parecido, por lo que de dejarlo se duplicarían los logs.
 
 // Rutas
 app.get("/", (req, res) => {
@@ -34,7 +34,7 @@ app.get("/", (req, res) => {
 app.use('/api', apiRouter)
 //app.use('/api/v2', apiRouterV2) // Si hubiera más versiones
 
-//Manejo de 404 Not found
+//Manejo de rutas no definidas
 app.use((req, res) => {
     res.status(404).json({ msg: "Invalid route" })
 })

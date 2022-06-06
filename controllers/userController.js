@@ -86,8 +86,7 @@ const deleteUser = async (req, res) => {
     }
 }
 
-const userController = { 
-    ...profileController,
+const userController = {
     getAllUsers, 
     getUser, 
     postUser,

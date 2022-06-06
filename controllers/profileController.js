@@ -171,7 +171,7 @@ const deleteProfile = async(req,res) => {
 
 // Manejo de listas
 
-const getAllLists = async(req, res) => {
+const getAllProfileLists = async(req, res) => {
        
     const userId = req.userId
     const profileId = req.params.profileId
@@ -183,8 +183,8 @@ const getAllLists = async(req, res) => {
         if(profile === undefined) {
             return res.status(404).send("The profile doesn't exist", profile)
         }
-        const list = profile.lists
-        res.status(200).json({msg: "Lists retrieved OK", list})
+        const profileLists = profile.lists
+        res.status(200).json({msg: "Lists retrieved OK", profileLists})
         
         
     } catch (error) {
@@ -222,6 +222,38 @@ const getOneList = async(req, res) => {
         res.status(404).json({msg: "Element not found", error})
     }
 }
+
+const postList = async(req, res) => {
+
+    const userId = req.userId
+    const profileId = req.params.profileId
+    const { name, items } = req.body
+
+    try {
+        const matchProfileId = (profile) => profile._id.toString() === profileId
+
+        const user = await User.findById({"_id":userId})
+        const profile = user.profiles.find(matchProfileId)
+        
+
+        if(!profile) {
+            return res.status(404).json({msg: "The profile doesn't exist"})
+        }
+        const profileIndex = user.profiles.findIndex(matchProfileId)
+
+        user.profiles[profileIndex].lists.push(req.body)
+
+        await user.save()
+        return res.status(200).json({ msg: `The list was created succesfully.`})
+        
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({msg: 'Internal server error', error})
+    }
+}
+
+
+// Manejo de items de las listas
 
 const getAllMediaFromList = async(req, res) => {
       
@@ -397,11 +429,12 @@ const profileController = {
     getAllProfiles, 
     patchProfile, 
     deleteProfile, 
+    getAllProfileLists,
+    getOneList,
+    postList,
     postMediaToList, 
     getOneMediaFromList, 
     getAllMediaFromList,
-    getAllLists,
-    getOneList,
     deleteOneMediaFromList
 }
 
