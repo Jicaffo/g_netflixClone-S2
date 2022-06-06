@@ -11,7 +11,7 @@ const router = express.Router()
 
 router.get('/', (req, res) => {
     res.status(200).json({
-        msg: "This is Guayerd Netflix Backend App 2022 Working. Documentation is still in progress, you can try with '/api/register' or '/api/login' to start."
+        msg: "This is Guayerd Netflix Backend App 2022 Working. Documentation is still in progress..."
     })
 })
 
